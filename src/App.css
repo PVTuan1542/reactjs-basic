@@ -84,16 +84,27 @@ button {
   width: 100%;
 }
 
+.input_comment_post{
+  margin: 30px 10px 0px 10px;
+}
+
 .action-comment {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+.reply-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
 }
 
 .form_comment {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  width: 100%
 }
 
 .form_comment_reply {
@@ -104,11 +115,11 @@ button {
 }
 
 .btn-reply-comment {
-  background-color:transparent;
-  border-color:transparent;
+  background-color: transparent;
+  border-color: transparent;
   cursor: pointer;
 }
 
-.btn-material{
-  margin: 5px
+.btn-material {
+  margin: 5px;
 }

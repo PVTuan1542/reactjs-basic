@@ -2,6 +2,7 @@ import * as e from 'express';
 import { Query } from 'express-serve-static-core';
 
 import { ISessionUser } from '@src/models/User';
+import { IPost } from '@src/models/Posts';
 
 
 // **** Express **** //
@@ -20,3 +21,10 @@ export interface IRes extends e.Response {
     sessionUser: ISessionUser;
   };
 }
+
+export interface IPosts extends e.Response{
+  locals: {
+    post: IPost
+  };
+}
+

@@ -19,6 +19,24 @@ const Paths = {
     Update: '/update',
     Delete: '/delete/:id',
   },
+  Posts: {
+    Base: '/posts',
+    Get: '/all',
+    Add: '/add',
+    Update: '/update/:id',
+    Delete: '/delete/:id',
+    GetLoadMore: '/loadMore'
+  },
+  Comments: {
+    Base: '/comments',
+    Get: '/all',
+    Add: '/add',
+    Update: '/update/:id',
+    Delete: '/delete/:id',
+    GetByPostId: '/postId/:id',
+    GetByParentId: '/parentId/:id'
+
+  },
 };
 
 

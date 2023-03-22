@@ -1,28 +1,39 @@
-import Comment from "./Comment";
-import { useEffect, useState } from "react";
+import Comments from "../app/Components/Comments/Comments";
+import { useState } from "react";
 import Modals from "./Components/Modal";
 import useModal from "./Components/useModal";
 import "../App.css";
 import "./Model/CSS/Post.css";
 import iconLike from "../app/Model/Image/like.png";
-import iconHeart from "../app/Model/Image/heart.png";
-import iconThreeDot from "../app/Model/Image/iconBT.jpg";
-import { PostContext } from "./Components/PostContext";
+import iconUnLike from "../app/Model/Image/unlike.png";
+
 import { useNavigate } from "react-router-dom";
 import { PostData } from "../App";
+import { POST } from "./Model/data";
+import axios from "axios";
+import IconThreeDot from "./Components/ThreeDot";
 
-function Post(props: { data: PostData; updateData: any; users: any }) {
+function Post(props: {
+  data: PostData;
+  users: any;
+  setPosts: any;
+  posts: PostData[];
+}) {
   const [postChange, setPostChange] = useState(props.data.desc);
   const { isShowing, toggle } = useModal();
   const [isShowComment, setIsShowComment] = useState(false);
   const [like, setLike] = useState(props.data.like);
   const [isLike, setIsLike] = useState(false);
-  const [user] = useState(props.users[props.data.userId - 1]);
-  const [comments, setComments]: [
-    { id: number; comment: string; replies: any[] }[],
-    any
-  ] = useState([]);
+  const [user] = useState(props.users[1]);
+
   const navigate = useNavigate();
+
+  async function updateLikePosts() {
+    await axios.post(`${POST.UPDATE_POST}/${props?.data?.id}`, {
+      like: isLike ? like - 1 : like + 1,
+    });
+    return;
+  }
 
   return (
     <div>
@@ -38,7 +49,6 @@ function Post(props: { data: PostData; updateData: any; users: any }) {
                   navigate("/profile", { state: user });
                 }}
               />
-
               <span
                 className="postUsername"
                 onClick={() => {
@@ -50,24 +60,21 @@ function Post(props: { data: PostData; updateData: any; users: any }) {
               <span className="postDate">15 min ago</span>
             </div>
             <div className="postTopRight">
-              <img
-                onClick={toggle}
-                className="postProfileImg"
-                src={iconThreeDot}
-                alt=""
+              <Modals
+                isShowing={isShowing}
+                hide={toggle}
+                setTrigger={toggle}
+                setPostChange={setPostChange}
+                postChange={postChange}
+                id={props.data.id}
               />
-              <PostContext.Provider value={props.data}>
-                <Modals
-                  isShowing={isShowing}
-                  hide={toggle}
-                  setTrigger={toggle}
-                  setPostChange={setPostChange}
-                  postChange={postChange}
-                  updateData={props.updateData}
-                  id={props.data.id}
-                />
-              </PostContext.Provider>
             </div>
+            <IconThreeDot
+              toggle={toggle}
+              id={props?.data?.id}
+              posts={props.posts}
+              setPosts={props.setPosts}
+            />
           </div>
           <div className="postCenter">
             <span className="postText">{postChange}</span>
@@ -75,30 +82,34 @@ function Post(props: { data: PostData; updateData: any; users: any }) {
           </div>
           <div className="postBottom">
             <div className="postBottomLeft">
-              <img
-                className="likeIcon"
-                src={iconHeart}
-                onClick={() => {
-                  setIsLike(!isLike);
-                  isLike ? setLike((n) => n - 1) : setLike((n) => n + 1);
-                }}
-                alt=""
-              />
-              <img
+              {isLike && <img
                 className="likeIcon"
                 src={iconLike}
-                onClick={() => {
+                onClick={async () => {
                   setIsLike(!isLike);
-                  isLike ? setLike((n) => n + 1) : setLike((n) => n - 1);
+                  console.log(isLike);
+                  isLike ? setLike((n) => n - 1) : setLike((n) => n + 1);
+                  await updateLikePosts();
                 }}
                 alt=""
-              />
+              />}
+              {!isLike && <img
+                className="likeIcon"
+                src={iconUnLike}
+                onClick={async () => {
+                  setIsLike(!isLike);
+                  console.log(isLike);
+                  isLike ? setLike((n) => n - 1) : setLike((n) => n + 1);
+                  await updateLikePosts();
+                }}
+                alt=""
+              />}
               <span className="postLikeCounter"> {like} people like it</span>
             </div>
             <div className="postBottomRight">
               <span
                 className="postCommentText"
-                onClick={(e) => {
+                onClick={() => {
                   setIsShowComment(!isShowComment);
                 }}
               >
@@ -106,12 +117,7 @@ function Post(props: { data: PostData; updateData: any; users: any }) {
               </span>
             </div>
           </div>
-          {isShowComment && (
-            <Comment
-              comments={comments}
-              setComments={setComments}
-            />
-          )}
+          {isShowComment && <Comments postId={props.data.id} />}
         </div>
       </div>
     </div>

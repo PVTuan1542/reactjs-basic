@@ -14,3 +14,9 @@ export interface IRes extends e.Response {
     sessionUser?: ISessionUser;
   };
 }
+
+export interface IResPost extends e.Response {
+  locals: {
+    sessionUser?: ISessionUser;
+  };
+}

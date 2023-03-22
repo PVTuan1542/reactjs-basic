@@ -1,60 +1,3 @@
-export let Posts = [
-  {
-    id: 1,
-    desc: "Best fre nature pictures.",
-    photo: "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg",
-    date: "5 mins ago",
-    userId: 1,
-    like: 32,
-    comment: 9,
-  },
-  {
-    id: 2,
-    desc: "Blur Part of a Picture",
-    photo: "https://imgv3.fotor.com/images/blog-cover-image/part-blurry-image.jpg",
-    date: "15 mins ago",
-    userId: 2,
-    like: 2,
-    comment: 1,
-  },
-  {
-    id: 3,
-    desc: "Search engines.",
-    photo: "https://cdn.searchenginejournal.com/wp-content/uploads/2022/06/image-search-1600-x-840-px-62c6dc4ff1eee-sej.png",
-    date: "15 mins ago",
-    userId: 2,
-    like: 2,
-    comment: 1,
-  },
-  {
-    id: 4,
-    desc: "Beautiful Day indeed.",
-    photo: "https://thumbs.dreamstime.com/b/beautiful-rain-forest-ang-ka-nature-trail-doi-inthanon-national-park-thailand-36703721.jpg",
-    date: "15 mins ago",
-    userId: 3,
-    like: 2,
-    comment: 1,
-  },
-  {
-    id: 5,
-    desc: "Beautiful Day indeed.",
-    photo: "https://thumbs.dreamstime.com/b/beautiful-rain-forest-ang-ka-nature-trail-doi-inthanon-national-park-thailand-36703721.jpg",
-    date: "15 mins ago",
-    userId: 4,
-    like: 2,
-    comment: 1,
-  },
-  {
-    id: 6,
-    desc: "Beautiful Day indeed.",
-    photo: "https://thumbs.dreamstime.com/b/beautiful-rain-forest-ang-ka-nature-trail-doi-inthanon-national-park-thailand-36703721.jpg",
-    date: "15 mins ago",
-    userId: 4,
-    like: 4,
-    comment: 1,
-  }
-]
-
 export const Users = [
   {
     id:1,
@@ -117,3 +60,26 @@ export const Users = [
     address: "Japan"
   },
 ];
+
+const URL = `http://localhost:4000/api`
+
+export const POST = {
+  GET_ALL_POSTS: `${URL}/posts/all`,
+  UPDATE_POST: `${URL}/posts/update`,
+  DELETE_POST: `${URL}/posts/delete`,
+  ADD_POST: `${URL}/posts/add`,
+  GET_LOAD_MORE: `${URL}/posts/loadMore`
+}
+
+export const COMMENT = {
+  GET_ALL: `${URL}/comments/all`,
+  UPDATE: `${URL}/comments/update`,
+  DELETE: `${URL}/comments/delete`,
+  ADD: `${URL}/comments/add`,
+  GET_BY_POST_ID: `${URL}/comments/postId`,
+  GET_BY_PARENT_ID: `${URL}/comments/parentId`
+}
+
+export const userId = "dbf13612-240c-43b9-ab0f-b5bf3ffe2f08"
+
+export const photoDefault = "https://cms.vietnamcoracle.com/wp-content/uploads/2018/08/20140922_103249-copy-blog-cropped-1-1024x752.jpg"

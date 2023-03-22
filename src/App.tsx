@@ -3,17 +3,25 @@ import { Routes, Route } from "react-router-dom";
 import ListPost from "./app/ListPost";
 import NewPost from "./app/NewPost";
 import Profile from "./app/Components/Profile/Profile";
-import { Posts, Users } from "./app/Model/data";
-import { useEffect, useState } from "react";
-
+import { Users } from "./app/Model/data";
+import { useState } from "react";
 export interface PostData {
   id: number;
   desc: string;
   photo: string;
   date: string;
-  userId: number;
+  user_id: number;
   like: number;
   comment: number;
+}
+
+export interface CommentData {
+  id: number;
+  user_id: number;
+  post_id: number;
+  parent_id: number;
+  like: number;
+  text: string;
 }
 
 export interface UserData {
@@ -24,24 +32,17 @@ export interface UserData {
 }
 
 function App() {
-  const [posts, setPosts] = useState<PostData[]>([]);
   const [users, setUsers] = useState<UserData[]>(Users);
-
-  useEffect(() => {
-    setPosts(Posts);
-
-  }, []);
-
 
   return (
     <Routes>
       <Route
         path="/"
-        element={<NewPost posts={posts} setPosts={setPosts} />}
+        element={<NewPost />}
       ></Route>
       <Route
         path="/page"
-        element={<ListPost users={users} posts={posts} setPosts={setPosts} />}
+        element={<ListPost users={users}/>}
       ></Route>
       <Route path="/profile" element={<Profile />}></Route>
     </Routes>

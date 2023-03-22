@@ -1,74 +1,60 @@
-import { Router } from 'express';
-import jetValidator from 'jet-validator';
-
-import adminMw from './middleware/adminMw';
-import Paths from './constants/Paths';
-import User from '@src/models/User';
-import AuthRoutes from './AuthRoutes';
-import UserRoutes from './UserRoutes';
-
+import { Router } from "express";
+import jetValidator from "jet-validator";
+import Paths from "./constants/Paths";
+import PostController from "./PostController";
+import CommentController from "./CommentController";
 
 // **** Variables **** //
 
-const apiRouter = Router(),
-  validate = jetValidator();
+const apiRouter = Router()
 
+// ** Add PostRouter ** //
+const postRouter = Router();
 
-// **** Setup **** //
+// Get all posts
+postRouter.get(Paths.Posts.Get, PostController.getAll);
 
-const authRouter = Router();
+// Get posts load more
+postRouter.get(Paths.Posts.GetLoadMore, PostController.getPostsLoadMore);
 
-// Login user
-authRouter.post(
-  Paths.Auth.Login,
-  validate('email', 'password'),
-  AuthRoutes.login,
-);
+// Add a post
+postRouter.post(Paths.Posts.Add, PostController.addPost);
 
-// Logout user
-authRouter.get(
-  Paths.Auth.Logout,
-  AuthRoutes.logout,
-);
+// update a post
+postRouter.post(Paths.Posts.Update, PostController.updatePost);
 
-// Add AuthRouter
-apiRouter.use(Paths.Auth.Base, authRouter);
+// delete a post
+postRouter.delete(Paths.Posts.Delete, PostController.deletePost);
 
+// Add UserRouter
+apiRouter.use(Paths.Posts.Base, postRouter);
 
-// ** Add UserRouter ** //
+// ** Add CommentsRouter ** //
+const commentRouter = Router();
 
-const userRouter = Router();
+// Get all comments
+commentRouter.get(Paths.Comments.Get, CommentController.getAll);
 
-// Get all users
-userRouter.get(
-  Paths.Users.Get,
-  UserRoutes.getAll,
-);
+// Add a comment
+commentRouter.post(Paths.Comments.Add, CommentController.addComment);
 
-// Add one user
-userRouter.post(
-  Paths.Users.Add,
-  validate(['user', User.isUser]),
-  UserRoutes.add,
-);
+// update a comment
+commentRouter.post(Paths.Comments.Update, CommentController.updateComment);
 
-// Update one user
-userRouter.put(
-  Paths.Users.Update,
-  validate(['user', User.isUser]),
-  UserRoutes.update,
-);
+// delete a comment
+commentRouter.delete(Paths.Comments.Delete, CommentController.deleteComment);
 
-// Delete one user
-userRouter.delete(
-  Paths.Users.Delete,
-  validate(['id', 'number', 'params']),
-  UserRoutes.delete,
+// get comment by post id
+commentRouter.get(Paths.Comments.GetByPostId, CommentController.getCommentByPostId);
+
+// get comment by parent id
+commentRouter.get(
+  Paths.Comments.GetByParentId,
+  CommentController.getCommentByParentId
 );
 
 // Add UserRouter
-apiRouter.use(Paths.Users.Base, adminMw, userRouter);
-
+apiRouter.use(Paths.Comments.Base, commentRouter);
 
 // **** Export default **** //
 

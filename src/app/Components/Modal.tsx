@@ -1,8 +1,9 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import ReactDOM from "react-dom";
-import { PostContext } from "./PostContext";
 import Button from "@mui/material/Button";
-import { Modal } from "@mui/material";
+import axios from "axios";
+import { photoDefault, POST, userId } from "../Model/data";
+import { PostData } from "../../App";
 
 const Modals = ({
   isShowing,
@@ -10,10 +11,37 @@ const Modals = ({
   setTrigger,
   postChange,
   setPostChange,
-  updateData,
+  id,
+  posts,
+  setPosts,
 }: any) => {
   let [post, setPost] = useState(postChange);
-  const value = useContext(PostContext);
+
+  async function updatePosts() {
+    await axios.post(`${POST.UPDATE_POST}/${id}`, {
+      desc: post,
+    });
+
+    return;
+  }
+
+  async function createPost() {
+    const response: any = await axios.post(POST.ADD_POST, {
+      desc: post,
+      photo: photoDefault,
+      user_id: userId,
+      like: 0,
+      comment: 0,
+    });
+    setPost("")
+
+    setPosts((previous: any) => {
+      const newPost = response.data as PostData;
+      const newPosts = [newPost, ...previous];
+
+      return newPosts;
+    });
+  }
 
   return isShowing
     ? ReactDOM.createPortal(
@@ -28,10 +56,11 @@ const Modals = ({
           >
             <div className="modal">
               <form
-                onSubmit={(e) => {
+                onSubmit={async (e) => {
                   e.preventDefault();
                   setPostChange(post);
-                  updateData({ id: value.id, desc: post });
+                  id && (await updatePosts());
+                  !id && (await createPost());
                   setTrigger();
                 }}
               >

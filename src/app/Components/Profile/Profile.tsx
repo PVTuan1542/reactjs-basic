@@ -7,8 +7,6 @@ function Profile() {
   const { state } = useLocation();
   const user = state;
 
-  console.log('aaaaaaaa', user)
-
   return (
     <div className="row py-5 px-4 profile_body">
       <div className="col-md-5 mx-auto">
